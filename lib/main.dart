@@ -5,6 +5,7 @@ import 'package:payflow/modules/home/home_page.dart';
 import 'package:payflow/modules/insert_boleto/insert_boleto_page.dart';
 import 'package:payflow/modules/login/login_page.dart';
 import 'package:payflow/modules/splash/splash_page.dart';
+import 'package:payflow/shared/models/user_model.dart';
 import 'package:payflow/shared/themes/app_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -14,6 +15,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(const AppWidget());
 }
 
@@ -34,10 +36,16 @@ class AppWidget extends StatelessWidget {
         initialRoute: "/splash",
         routes: {
           "/splash": (context) => const SplashPage(),
-          "/home": (context) => const HomePage(),
+          "/home": (context) => HomePage(
+                user: ModalRoute.of(context)!.settings.arguments as UserModel,
+              ),
           "/login": (context) => const LoginPage(),
           "/barcode_scanner": (context) => const BarcodeScannerPage(),
-          "/insert_boleto": (context) => const InsertBoletoPage()
+          "/insert_boleto": (context) => InsertBoletoPage(
+                barcode: ModalRoute.of(context) != null
+                    ? ModalRoute.of(context)!.settings.arguments.toString()
+                    : null,
+              )
         });
   }
 }

@@ -11,32 +11,52 @@ class SetLabelButtons extends StatelessWidget {
   final String secondaryLabel;
   final VoidCallback secondaryOnPressed;
   final bool enablePrimaryColor;
+  final bool enableSecondaryColor;
+
   const SetLabelButtons(
       {super.key,
       required this.primaryLabel,
       required this.primaryOnPressed,
       required this.secondaryLabel,
       required this.secondaryOnPressed,
-      this.enablePrimaryColor = false});
+      this.enablePrimaryColor = false,
+      this.enableSecondaryColor = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.shape,
-      height: 56,
-      decoration: const BoxDecoration(),
-      child: Row(
+      height: 57,
+      decoration: const BoxDecoration(
+        color: AppColors.background,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
-              child: LabelButton(
-            label: primaryLabel,
-            onPressed: primaryOnPressed,
-            style: enablePrimaryColor ? TextStyles.buttonPrimary : null,
-          )),
-          const DividirVerticalWidget(),
-          Expanded(
-              child: LabelButton(
-                  label: secondaryLabel, onPressed: secondaryOnPressed)),
+          Divider(
+            thickness: 1,
+            height: 1,
+            color: AppColors.stroke,
+          ),
+          Container(
+            height: 56,
+            child: Row(
+              children: [
+                Expanded(
+                    child: LabelButton(
+                  label: primaryLabel,
+                  onPressed: primaryOnPressed,
+                  style: enablePrimaryColor ? TextStyles.buttonPrimary : null,
+                )),
+                const DividirVerticalWidget(),
+                Expanded(
+                    child: LabelButton(
+                  label: secondaryLabel,
+                  onPressed: secondaryOnPressed,
+                  style: enableSecondaryColor ? TextStyles.buttonPrimary : null,
+                )),
+              ],
+            ),
+          ),
         ],
       ),
     );

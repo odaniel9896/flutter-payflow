@@ -4,8 +4,6 @@ import 'package:payflow/modules/barcode_scanner/barcode_scanner_status.dart';
 import 'package:payflow/shared/themes/app_colors.dart';
 import 'package:payflow/shared/themes/app_text_styles.dart';
 import 'package:payflow/shared/widgets/bottom_sheet/bottom_sheet_widget.dart';
-import 'package:payflow/shared/widgets/divider_vertical/divider_vertical_widget.dart';
-import 'package:payflow/shared/widgets/label_button/label_button.dart';
 import 'package:payflow/shared/widgets/set_label_buttons/set_label_buttons.dart';
 
 class BarcodeScannerPage extends StatefulWidget {
@@ -22,19 +20,18 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   void initState() {
     controller.getAvailableCameras();
     controller.statusNotifier.addListener(() {
+      print(controller.status.hasBarcode);
       if (controller.status.hasBarcode) {
-        Navigator.pushReplacementNamed(context, "/insert_boleto");
+        Navigator.pushReplacementNamed(context, "/insert_boleto",
+            arguments: controller.status.barcode);
       }
-      ;
     });
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
     controller.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -52,9 +49,12 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
               builder: (_, status, __) {
                 if (status.showCamera) {
                   return Container(
-                      child: status.cameraController!.buildPreview());
+                      decoration: const BoxDecoration(),
+                      child: controller.cameraController!.buildPreview());
                 } else {
-                  return Container();
+                  return Container(
+                    decoration: const BoxDecoration(),
+                  );
                 }
               }),
           RotatedBox(
@@ -73,21 +73,29 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
               body: Column(children: [
                 Expanded(
                     child: Container(
-                  color: Colors.black.withOpacity(0.6),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                  ),
                 )),
                 Expanded(
                     flex: 2,
                     child: Container(
-                      color: Colors.transparent,
+                      decoration: const BoxDecoration(
+                        color: Colors.transparent,
+                      ),
                     )),
                 Expanded(
                     child: Container(
-                  color: Colors.black.withOpacity(0.6),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                  ),
                 ))
               ]),
               bottomNavigationBar: SetLabelButtons(
                 primaryLabel: "Inserir código do boleto",
-                primaryOnPressed: () {},
+                primaryOnPressed: () {
+                  Navigator.pushReplacementNamed(context, "/insert_boleto");
+                },
                 secondaryLabel: "Adicionar a galeria",
                 secondaryOnPressed: () {},
               ),
@@ -100,10 +108,13 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                   return BottomSheetWidget(
                       primaryLabel: "Escanear novamente",
                       primaryOnPressed: () {
-                        controller.getAvailableCameras();
+                        controller.scanWithCamera();
                       },
-                      secondaryLabel: "Digitar odigo",
-                      secondaryOnPressed: () {},
+                      secondaryLabel: "Digitar codigo",
+                      secondaryOnPressed: () {
+                        Navigator.pushReplacementNamed(
+                            context, "/insert_boleto");
+                      },
                       title:
                           "Não foi possível identificar um código de barras.",
                       subtitle:

@@ -30,7 +30,9 @@ class BottomSheetWidget extends StatelessWidget {
             child: Column(
               children: [
                 Expanded(
-                    child: Container(color: Colors.black.withOpacity(0.6))),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6)))),
                 Column(
                   children: [
                     Padding(
