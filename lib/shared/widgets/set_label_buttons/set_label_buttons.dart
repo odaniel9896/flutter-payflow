@@ -32,12 +32,13 @@ class SetLabelButtons extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Divider(
+          const Divider(
             thickness: 1,
             height: 1,
             color: AppColors.stroke,
           ),
           Container(
+            decoration: const BoxDecoration(),
             height: 56,
             child: Row(
               children: [

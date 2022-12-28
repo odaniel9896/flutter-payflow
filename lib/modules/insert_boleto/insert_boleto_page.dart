@@ -63,6 +63,7 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                       child: Column(children: [
                         InputTextWidget(
                           label: "Nome do boleto",
+                          keyboardType: TextInputType.text,
                           icon: Icons.description_outlined,
                           onChanged: (value) {
                             controller.onChange(name: value);
@@ -73,6 +74,7 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                           controller: dueDateInputTextController,
                           label: "Vencimento",
                           icon: FontAwesomeIcons.circleXmark,
+                          keyboardType: TextInputType.datetime,
                           validator: controller.validateVencimento,
                           onChanged: (value) {
                             controller.onChange(dueDate: value);
@@ -81,6 +83,7 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                         InputTextWidget(
                           controller: moneyInputTextController,
                           label: "Valor",
+                          keyboardType: TextInputType.number,
                           icon: FontAwesomeIcons.wallet,
                           validator: (_) => controller.validateValor(
                               moneyInputTextController.numberValue),
@@ -93,6 +96,7 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                           controller: barcodeInputTextController,
                           validator: controller.validateCodigo,
                           label: "Código",
+                          keyboardType: TextInputType.text,
                           icon: FontAwesomeIcons.barcode,
                           onChanged: (value) {
                             controller.onChange(barcode: value);

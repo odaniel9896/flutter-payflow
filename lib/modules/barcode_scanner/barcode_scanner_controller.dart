@@ -8,11 +8,14 @@ import 'package:payflow/modules/barcode_scanner/barcode_scanner_status.dart';
 class BarcodeScanerController {
   final statusNotifier =
       ValueNotifier<BarcodeScannerStatus>(BarcodeScannerStatus());
-  CameraController? cameraController;
-
   BarcodeScannerStatus get status => statusNotifier.value;
   set status(BarcodeScannerStatus status) => statusNotifier.value = status;
+
   final barcodeScanner = GoogleMlKit.vision.barcodeScanner();
+
+  InputImage? imagePicker;
+
+  CameraController? cameraController;
 
   void getAvailableCameras() async {
     try {
@@ -22,6 +25,7 @@ class BarcodeScanerController {
       cameraController =
           CameraController(camera, ResolutionPreset.max, enableAudio: false);
       await cameraController!.initialize();
+
       scanWithCamera();
       listenCamera();
     } catch (e) {
@@ -52,8 +56,8 @@ class BarcodeScanerController {
       String? barcode;
 
       for (Barcode item in barcodes) {
-        final String? displayValue = item.displayValue;
-        barcode = displayValue;
+        barcode = item.displayValue;
+        // barcode = displayValue;
       }
 
       if (barcode != null && status.barcode.isEmpty) {
@@ -71,7 +75,7 @@ class BarcodeScanerController {
   void listenCamera() {
     if (cameraController!.value.isStreamingImages == false) {
       cameraController!.startImageStream((cameraImage) async {
-        if (status.stopScannr == false) {
+        if (status.stopScanner == false) {
           try {
             final WriteBuffer allBytes = WriteBuffer();
             for (Plane plane in cameraImage.planes) {

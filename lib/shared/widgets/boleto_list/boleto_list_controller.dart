@@ -15,7 +15,6 @@ class BoletoListController {
     try {
       final instace = await SharedPreferences.getInstance();
       final response = instace.getStringList("boletos") ?? <String>[];
-      print(response.toString());
       boletos = response.map((e) => BoletoModel.fromJson(e)).toList();
     } catch (e) {
       boletos = <BoletoModel>[];
